@@ -1,0 +1,15 @@
+{
+  "name": "contributer_dashboard",
+  "version": "1.0.0",
+  "description": "Contributer Dashboard is the portal of the 99x Technologies which connects University Incubators islandwide.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "avilon",
+  "license": "ISC",
+  "dependencies": {
+    "@octokit/rest": "^16.30.0",
+    "express": "^4.17.1"
+  }
+}
