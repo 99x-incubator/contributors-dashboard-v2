@@ -7,7 +7,7 @@ require('dotenv').config();
 const port = process.env.PORT;
 const octokit = new Octokit({ auth: process.env.SECRET });
 
-var dataSet;
+var dataSet={};
 
 app.get('/', async (req, res) => {
 
@@ -24,7 +24,7 @@ app.get('/', async (req, res) => {
       repo: repoName
     });
 
-    let fetchedContributors = ["aa"];
+    let fetchedContributors = [repoName];
 
     result.data.map(contributor => {
       if (fetchedContributors.length != 0) {
@@ -36,7 +36,8 @@ app.get('/', async (req, res) => {
       }
     });
 
-    console.log(fetchedContributors);
+    
+    dataSet[repoName]=fetchedContributors;
   });
   res.send("<h1>" + dataSet + "</h1>");
 
