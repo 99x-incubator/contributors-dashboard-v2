@@ -7,7 +7,7 @@ require('dotenv').config();
 const port = process.env.PORT;
 const octokit = new Octokit({ auth: process.env.SECRET });
 
-var dataSet={};
+var dataSet = {};
 
 app.get('/', async (req, res) => {
 
@@ -16,7 +16,10 @@ app.get('/', async (req, res) => {
     type: "public"
   });
 
-  repoData.data.forEach(async repo => {
+  let fetchedContributors = [];
+
+
+  const x = await Promise.all(repoData.data.map(async repo => {
     const repoName = repo.name;
 
     const result = await octokit.repos.getContributorsStats({
@@ -24,22 +27,25 @@ app.get('/', async (req, res) => {
       repo: repoName
     });
 
-    let fetchedContributors = [repoName];
 
     result.data.map(contributor => {
-      if (fetchedContributors.length != 0) {
-        fetchedContributors.map(ftCon => {
-          if (ftCon != contributor.author.login) {
-            fetchedContributors.push(contributor.author.login);
-          }
-        });
-      }
+      // if (fetchedContributors.length != 0) {
+      //   fetchedContributors.map(ftCon => {
+      //     if (ftCon != contributor.author.login) {
+      fetchedContributors.push(contributor);
     });
+    //    });
+    // }
+    // });
 
-    
-    dataSet[repoName]=fetchedContributors;
+    dataSet[repoName] = fetchedContributors;
+
+  })).then(() => {
+    res.json(dataSet);
+  }).catch(err => {
+    console.log(err);
   });
-  res.send("<h1>" + dataSet + "</h1>");
+
 
 });
 
